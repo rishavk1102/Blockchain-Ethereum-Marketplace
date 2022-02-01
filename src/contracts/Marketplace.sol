@@ -20,6 +20,15 @@ contract Marketplace {
         bool purchased;
     }
 
+    //Creating an event for product created
+    event ProductCreated(
+        uint256 id,
+        string name,
+        uint256 price,
+        address owner,
+        bool purchased
+    );
+
     // public constructor
     constructor() public {
         name = "Learning Marketplace";
@@ -43,5 +52,6 @@ contract Marketplace {
         );
 
         // Trigger an event
+        emit ProductCreated(productCount, _name, _price, msg.sender, false);
     }
 }

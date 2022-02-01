@@ -39,7 +39,11 @@ contract("Marketplace", (accounts) => {
     });
 
     it("creates product", async () => {
+      //SUCCESS
       assert.equal(productCount, 1);
+      const event = result.logs[0].args;
+
+      console.log(event);
     });
   });
 });
