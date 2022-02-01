@@ -33,6 +33,15 @@ contract Marketplace {
         // Increment productCount
         productCount++;
 
+        //Creating the product
+        products[productCount] = Product(
+            productCount,
+            _name,
+            _price,
+            msg.sender,
+            false
+        );
+
         // Trigger an event
     }
 }
