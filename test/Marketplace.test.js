@@ -5,7 +5,7 @@ const Marketplace = artifacts.require("./src/Marketplace.sol");
 
 const web3 = new Web3();
 
-contract("Marketplace", (accounts) => {
+contract("Marketplace", ([deployer, seller, buyer]) => {
   let marketplace;
 
   before(async () => {
@@ -33,7 +33,9 @@ contract("Marketplace", (accounts) => {
     before(async () => {
       result = await marketplace.createProduct(
         "iPhone 13",
-        web3.utils.toWei("1", "ether")
+        web3.utils.toWei("1", "ether"),
+        // adding metadata - sender
+        { from: seller }
       );
       productCount = await marketplace.productCount();
     });
@@ -43,7 +45,12 @@ contract("Marketplace", (accounts) => {
       assert.equal(productCount, 1);
       const event = result.logs[0].args;
 
-      console.log(event);
+      assert.equal(
+        event.id.toNumber(),
+        productCount.toNumber(),
+        "id is correct"
+      );
+      assert.equal(event.owner, seller, "owner is correct");
     });
   });
 });
