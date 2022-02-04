@@ -1,6 +1,10 @@
 const { assert } = require("chai");
 const Web3 = require("web3");
 
+require("chai")
+  .use(require("chai-as-promised"))
+  .should();
+
 const Marketplace = artifacts.require("./src/Marketplace.sol");
 
 const web3 = new Web3();
@@ -41,7 +45,7 @@ contract("Marketplace", ([deployer, seller, buyer]) => {
     });
 
     it("creates product", async () => {
-      //SUCCESS
+      // SUCCESS
       assert.equal(productCount, 1);
       const event = result.logs[0].args;
 
@@ -51,6 +55,17 @@ contract("Marketplace", ([deployer, seller, buyer]) => {
         "id is correct"
       );
       assert.equal(event.owner, seller, "owner is correct");
+
+      // FAILURE
+      // Product must have a name
+      await await marketplace.createProduct(
+        "",
+        web3.utils.toWei("1", "ether"),
+        { from: seller }
+      ).should.be.rejected;
+      // Product must have a price
+      await await marketplace.createProduct("iPhone X", 0, { from: seller })
+        .should.be.rejected;
     });
   });
 });
