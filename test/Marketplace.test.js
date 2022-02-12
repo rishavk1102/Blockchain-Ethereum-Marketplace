@@ -77,5 +77,21 @@ contract("Marketplace", ([deployer, seller, buyer]) => {
         "id is correct"
       );
     });
+
+    it("sells products", async () => {
+      // SUCCESS : Buyer makes purchase
+      let result = await marketplace.purchaseProduct(productCount, {
+        from: buyer,
+        value: web3.utils.toWei("1", "Ether"),
+      });
+
+      // Check logs
+      const event = result.logs[0].args;
+      assert.equal(
+        event.id.toNumber(),
+        productCount.toNumber(),
+        "id is correct"
+      );
+    });
   });
 });
