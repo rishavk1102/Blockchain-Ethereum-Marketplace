@@ -67,5 +67,15 @@ contract("Marketplace", ([deployer, seller, buyer]) => {
       await await marketplace.createProduct("iPhone X", 0, { from: seller })
         .should.be.rejected;
     });
+
+    it("lists products", async () => {
+      const product = await marketplace.products(productCount);
+
+      assert.equal(
+        product.id.toNumber(),
+        productCount.toNumber(),
+        "id is correct"
+      );
+    });
   });
 });
