@@ -92,6 +92,13 @@ contract("Marketplace", ([deployer, seller, buyer]) => {
         productCount.toNumber(),
         "id is correct"
       );
+
+      // Failure cases
+      // Trying to buy a product that is not valid
+      await marketplace.purchaseProduct(99, {
+        from: buyer,
+        value: web3.utils.toWei("1", "Ether"),
+      }).should.be.rejected;
     });
   });
 });
